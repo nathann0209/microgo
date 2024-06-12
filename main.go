@@ -1,40 +1,50 @@
 package main
 
 import (
-	"fmt"
-	"io"
+	"context"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
+
+	"github.com/nathann0209/microgo/handlers"
 )
 
 func main() {
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		log.Println("Hello World")
-		// Retrieve data in body of request in form of data slice
-		data, err := io.ReadAll(r.Body)
+	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	helloHandler := handlers.NewHello(l)
+	goodbyeHandler := handlers.NewGoodbye(l)
 
-		// // Basic error handling: Type 1
-		// if err != nil {
-		// 	rw.WriteHeader(http.StatusBadRequest)
-		// 	rw.Write([]byte("Oops"))
-		// }
+	sm := http.NewServeMux()
+	sm.Handle("/", helloHandler)
+	sm.Handle("/goodbye", goodbyeHandler)
 
-		// Basic error handling: Type 2 using http.Error method.
+	s := &http.Server{
+		Addr:         ":9090",
+		Handler:      sm,
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  1 * time.Second,
+		WriteTimeout: 1 * time.Second,
+	}
+	// Handle ListenandServe in go func "so with won't block"
+	go func() {
+		err := s.ListenAndServe()
 		if err != nil {
-			http.Error(rw, "Oops", http.StatusBadRequest)
-			return
+			l.Fatal(err)
 		}
+		// http.ListenAndServe(":9090", sm)
+	}()
 
-		// Print the retrieved data
-		log.Printf("Data: %s\n", data)
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, os.Kill)
 
-		// Write response back to user
-		fmt.Fprintf(rw, "Hello %s", data)
-	})
+	sig := <-sigChan
+	l.Println("Received terminate, graceful shutdown", sig)
 
-	http.HandleFunc("/goodbye", func(http.ResponseWriter, *http.Request) {
-		log.Println("Goodbye World")
-	})
-
-	http.ListenAndServe(":9090", nil)
+	// time context
+	// 30 seconds to attempt to gracefully shutdown but forcefully close down aftre 30 seconds
+	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	s.Shutdown(tc)
 }
