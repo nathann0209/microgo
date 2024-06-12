@@ -83,12 +83,12 @@ func (p *Post) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	// Check if the CSV file exists
 	fileExists := true
-	if _, err := os.Stat("logs/requests.csv"); os.IsNotExist(err) {
+	if _, err := os.Stat("logs/request_metrics.csv"); os.IsNotExist(err) {
 		fileExists = false
 	}
 
 	// Open or create the CSV file in append mode
-	file, err := os.OpenFile("logs/reqeust_metrics.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile("logs/request_metrics.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatalf("Failed to write records to CSV File: %s", err)
 	}
