@@ -2,8 +2,7 @@ package handlers
 
 import (
 	"encoding/csv"
-	"fmt"
-	"io"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -11,10 +10,12 @@ import (
 	"time"
 )
 
-type Post struct {
+type Get struct {
 	l *log.Logger
 }
-
+type Response struct {
+	Key string `json:"message"`
+}
 type LogRecord struct {
 	IP           string
 	Endpoint     string
@@ -31,13 +32,13 @@ func NewLogRecord(IpAddr string, Endp string, Meth string, ReqSize int64,
 	return &LogRecord{IpAddr, Endp, Meth, ReqSize, RespSize, StatCode, ts, duration}
 }
 
-func NewPost(l *log.Logger) *Post {
-	return &Post{l}
+func NewGet(l *log.Logger) *Get {
+	return &Get{l}
 }
 
-func (p *Post) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+func (p *Get) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
-	p.l.Println("Hello from your post handler!")
+	p.l.Println("Hello from your standard handler!")
 
 	// Extract the information about request
 	start := time.Now()
@@ -55,13 +56,9 @@ func (p *Post) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	timestamp := time.Now()
 
 	// Write response
-	data, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(rw, "Oops, something went wrong reading the request body.", http.StatusBadRequest)
-		return
-	}
-	response := fmt.Sprintf("Posted for request data: %s!", string(data))
-	rw.Write([]byte(response))
+	response := Response{Key: "Hello World"}
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(response)
 
 	duration := time.Since(start)
 
@@ -71,7 +68,7 @@ func (p *Post) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		endpoint,
 		method,
 		requestSize,
-		len(response),
+		21, // "message: Hello World" is the response so this is the length
 		http.StatusOK,
 		timestamp,
 		duration,
@@ -90,7 +87,7 @@ func (p *Post) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	// Check if the CSV file exists
 	fileExists := true
-	if _, err := os.Stat("logs/request_metrics.csv"); os.IsNotExist(err) {
+	if _, err := os.Stat("logs/request_metrics_non_post.csv"); os.IsNotExist(err) {
 		fileExists = false
 	}
 

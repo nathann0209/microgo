@@ -16,11 +16,13 @@ func main() {
 	helloHandler := handlers.NewHello(l)
 	goodbyeHandler := handlers.NewGoodbye(l)
 	postHandler := handlers.NewPost(l)
+	getHandler := handlers.NewGet(l)
 
 	sm := http.NewServeMux()
 	sm.Handle("/", helloHandler)
 	sm.Handle("/goodbye", goodbyeHandler)
 	sm.Handle("/post", postHandler)
+	sm.Handle("/get", getHandler)
 
 	s := &http.Server{
 		Addr:         ":9090",
