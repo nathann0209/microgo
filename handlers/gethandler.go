@@ -16,7 +16,7 @@ type Get struct {
 type Response struct {
 	Key string `json:"message"`
 }
-type LogRecord struct {
+type LogRecordGet struct {
 	IP           string
 	Endpoint     string
 	Method       string
@@ -27,9 +27,9 @@ type LogRecord struct {
 	duration     time.Duration
 }
 
-func NewLogRecord(IpAddr string, Endp string, Meth string, ReqSize int64,
-	RespSize int, StatCode int, ts time.Time, duration time.Duration) *LogRecord {
-	return &LogRecord{IpAddr, Endp, Meth, ReqSize, RespSize, StatCode, ts, duration}
+func NewLogRecordGet(IpAddr string, Endp string, Meth string, ReqSize int64,
+	RespSize int, StatCode int, ts time.Time, duration time.Duration) *LogRecordGet {
+	return &LogRecordGet{IpAddr, Endp, Meth, ReqSize, RespSize, StatCode, ts, duration}
 }
 
 func NewGet(l *log.Logger) *Get {
@@ -38,7 +38,7 @@ func NewGet(l *log.Logger) *Get {
 
 func (p *Get) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
-	p.l.Println("Hello from your standard handler!")
+	p.l.Println("Hello from your GET handler!")
 
 	// Extract the information about request
 	start := time.Now()
@@ -63,7 +63,7 @@ func (p *Get) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	duration := time.Since(start)
 
 	// Prepare Reqeuest/Response data for logging
-	logRecord := NewLogRecord(
+	logRecord := NewLogRecordGet(
 		ip,
 		endpoint,
 		method,

@@ -37,7 +37,7 @@ func NewPost(l *log.Logger) *Post {
 
 func (p *Post) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
-	p.l.Println("Hello from your post handler!")
+	p.l.Println("Hello from your POST handler!")
 
 	// Extract the information about request
 	start := time.Now()
