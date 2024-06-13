@@ -1,3 +1,7 @@
 IP,Endpoint,Method,RequestSize,ResponseSize,StatusCode,Timestamp,Duration
 [::1]:44168,/post,PUT,32,7,200,2024-06-12T22:58:33+01:00,1.846µs
 [::1]:34226,/post,PUT,32,7,200,2024-06-12T22:58:44+01:00,1.517µs
+IP,Endpoint,Method,RequestSize,ResponseSize,StatusCode,Timestamp,Duration
+[::1]:42510,/get,GET,0,21,200,2024-06-13T13:39:34+01:00,22.162µs
+IP,Endpoint,Method,RequestSize,ResponseSize,StatusCode,Timestamp,Duration
+[::1]:40716,/get,GET,0,21,200,2024-06-13T13:40:13+01:00,25.785µs
