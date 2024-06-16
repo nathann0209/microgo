@@ -23,7 +23,7 @@ func (h *Hello) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Error parsing template", http.StatusInternalServerError)
 		return
 	}
-	data := struct{ Name string }{Name: "Templ Tester"}
+	data := struct{ Name string }{Name: "Temple Tester"}
 	err = tmpl.Execute(rw, data)
 	if err != nil {
 		http.Error(rw, "Error executing template", http.StatusInternalServerError)
