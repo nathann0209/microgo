@@ -1,32 +1,31 @@
 package handlers
 
 import (
-	"fmt"
-	"io"
+	"html/template"
 	"log"
 	"net/http"
+	"path/filepath"
 )
 
 type Hello struct {
 	l *log.Logger
 }
 
-// Constructor
 func NewHello(l *log.Logger) *Hello {
 	return &Hello{l}
 }
 
-// Method
 func (h *Hello) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	h.l.Println("Hello World")
-	// Retrieve data in body of request in form of data slice
-	data, err := io.ReadAll(r.Body)
-	// Basic error handling: Type 2 using http.Error method.
+	tmplPath := filepath.Join("templates", "home.html")
+	tmpl, err := template.ParseFiles(tmplPath)
 	if err != nil {
-		http.Error(rw, "Oops", http.StatusBadRequest)
+		http.Error(rw, "Error parsing template", http.StatusInternalServerError)
 		return
 	}
-
-	// Write response back to user
-	fmt.Fprintf(rw, "Hello %s", data)
+	data := struct{ Name string }{Name: "Templ Tester"}
+	err = tmpl.Execute(rw, data)
+	if err != nil {
+		http.Error(rw, "Error executing template", http.StatusInternalServerError)
+	}
 }

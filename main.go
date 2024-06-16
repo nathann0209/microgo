@@ -12,21 +12,22 @@ import (
 )
 
 func main() {
-	l := log.New(os.Stdout, "product-api", log.LstdFlags)
-	helloHandler := handlers.NewHello(l)
-	goodbyeHandler := handlers.NewGoodbye(l)
-	postHandler := handlers.NewPost(l)
-	getHandler := handlers.NewGet(l)
+	logger := log.New(os.Stdout, "product-api", log.LstdFlags)
+	helloHandler := handlers.NewHello(logger)
+	goodbyeHandler := handlers.NewGoodbye(logger)
+	postHandler := handlers.NewPost(logger)
+	getHandler := handlers.NewGet(logger)
 
-	sm := http.NewServeMux()
-	sm.Handle("/", helloHandler)
-	sm.Handle("/goodbye", goodbyeHandler)
-	sm.Handle("/post", postHandler)
-	sm.Handle("/get", getHandler)
+	router := http.NewServeMux()
+	router.Handle("/", helloHandler)
+	router.Handle("/goodbye", goodbyeHandler)
+	router.Handle("/post", postHandler)
+	router.Handle("/get", getHandler)
+	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	s := &http.Server{
 		Addr:         ":9090",
-		Handler:      sm,
+		Handler:      router,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
@@ -35,7 +36,7 @@ func main() {
 	go func() {
 		err := s.ListenAndServe()
 		if err != nil {
-			l.Fatal(err)
+			logger.Fatal(err)
 		}
 		// http.ListenAndServe(":9090", sm)
 	}()
@@ -45,7 +46,7 @@ func main() {
 	signal.Notify(sigChan, os.Kill)
 
 	sig := <-sigChan
-	l.Println("Received terminate, graceful shutdown", sig)
+	logger.Println("Received terminate, graceful shutdown", sig)
 
 	// time context
 	// 30 seconds to attempt to gracefully shutdown but forcefully close down aftre 30 seconds
