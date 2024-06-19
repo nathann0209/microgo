@@ -11,9 +11,14 @@
 </head>
 <body>
     <div>Hello, {{ .Name }}</div>
-    <button id="myButton">Click Me</button>
-    <zero-md src="/static/pointers.md"></zero-md>
-    <script src="/static/script.js"></script>
+    <button onclick="openInNewTab('/pointers')">Open File 1</button>
+    <!-- <zero-md src="/static/pointers.md"></zero-md>
+    <script src="/static/script.js"></script> -->
+    <script>
+        function openInNewTab(url) {
+            window.open(url, '_blank').focus();
+        }
+    </script>
 </body>
 </html>
 
