@@ -17,12 +17,14 @@ func main() {
 	goodbyeHandler := handlers.NewGoodbye(logger)
 	postHandler := handlers.NewPost(logger)
 	getHandler := handlers.NewGet(logger)
+	fileHandler := handlers.NewFileHandler(logger)
 
 	router := http.NewServeMux()
 	router.Handle("/", helloHandler)
 	router.Handle("/goodbye", goodbyeHandler)
 	router.Handle("/post", postHandler)
 	router.Handle("/get", getHandler)
+	router.Handle("/pointers", fileHandler)
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	s := &http.Server{
