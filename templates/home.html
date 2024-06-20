@@ -6,14 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <!-- Load the element definition -->
-    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
 </head>
 <body>
-    <div>Hello, {{ .Name }}</div>
-    <button onclick="openInNewTab('/pointers')">Open File 1</button>
-    <!-- <zero-md src="/static/pointers.md"></zero-md>
-    <script src="/static/script.js"></script> -->
+    <div>Hello, {{ .Name }} </div>
+    <a onclick="openInNewTab('/pointers')" href = "/" >Intro to Pointers</a> 
     <script>
         function openInNewTab(url) {
             window.open(url, '_blank').focus();
