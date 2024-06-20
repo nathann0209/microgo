@@ -2,11 +2,11 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    text-align: center;
-    padding: 50px;
+    text-align: left;
+    padding: 10px;
 }
 
-button {
+/* button {
     background-color: #4CAF50;
     color: white;
     padding: 15px 32px;
@@ -17,4 +17,4 @@ button {
     margin: 4px 2px;
     cursor: pointer;
     border: none;
-}
+} */
