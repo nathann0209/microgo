@@ -32,14 +32,16 @@ func main() {
     }
 }
 
-func periodicUpdate() {
-    for {
-        if err := UpdateDataIfNeeded(); err != nil {
-            fmt.Printf("Error updating data: %v\n", err)
-        }
-        time.Sleep(5 * time.Minute)
+ // Set up periodic updates
+go func() {
+    ticker := time.NewTicker(updateInterval)
+    for range ticker.C {
+        updateData(repo)
     }
-}
+}()
+
+// Initial data update
+updateData(repo)
 ```
 `git_handler.go`
 ```
