@@ -34,7 +34,6 @@ The main difference though is that \*xPointer = 10 is a more fundamental assignm
 
 (see Functions: Part 3):
 
-[Link to my Resume!](https://www.overleaf.com/read/jrcfsdbkrfdk#66a750)
 
 **NOTE: Dereferencing does not work when the pointer is nil**. 
 
