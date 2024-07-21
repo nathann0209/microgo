@@ -1,0 +1,34 @@
+kafka-analysis-project/
+├── backend/                     # Go backend application
+│   ├── cmd/                     # Command-line entry points
+│   │   └── server/              # Server startup code
+│   │       └── main.go          # Main entry point for the server
+│   ├── internal/                # Private application and library code
+│   │   ├── config/              # Configuration handling
+│   │   │   └── parser.go        # YAML config file parser
+│   │   ├── analyzer/            # Kafka usage analysis logic
+│   │   │   └── kafka_analyzer.go # Core analysis functions
+│   │   ├── api/                 # API-related code
+│   │   │   └── handlers.go      # HTTP request handlers
+│   │   ├── gitops/              # Git operations management
+│   │   │   └── repo_manager.go  # Git repository interaction functions
+│   │   └── cache/               # Caching mechanisms
+│   │       └── cache_manager.go # Cache read/write operations
+│   ├── pkg/                     # Library code that's ok to use by external applications
+│   │   └── models/              # Data models
+│   │       └── kafka_models.go  # Structs representing Kafka entities
+│   ├── data/                    # Data storage (ignored by version control)
+│   │   ├── config_repo/         # Cloned configuration repository
+│   │   └── cache/               # Cached data storage
+│   │       ├── last_commit_hash # File storing the last processed commit hash
+│   │       └── parsed_results.json # Cached parsed configuration results
+│   ├── go.mod                   # Go module definition
+│   ├── go.sum                   # Go module dependency checksums
+│   └── Dockerfile               # Docker build instructions for backend
+├── frontend/                    # React frontend application
+│   ├── public/                  # Public assets
+│   ├── src/                     # Source files for React app
+│   ├── package.json             # Node.js dependencies and scripts
+│   └── Dockerfile               # Docker build instructions for frontend
+├── docker-compose.yml           # Multi-container Docker compose file
+└── README.md                    # Project documentation and setup instructions
