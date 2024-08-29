@@ -1,5 +1,5 @@
 import React from 'react';
-import { useReactFlow } from 'reactflow';
+import { useReactFlow } from '@xyflow/react';
 
 const ZoomButtons = ({ size = 40, color = '#ffffff', backgroundColor = '#808080' }) => {
   const { zoomIn, zoomOut } = useReactFlow();
