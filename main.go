@@ -54,4 +54,6 @@ func main() {
 	// 30 seconds to attempt to gracefully shutdown but forcefully close down aftre 30 seconds
 	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
 	s.Shutdown(tc)
+
+	myString := "Hello Jeffrey"
 }
